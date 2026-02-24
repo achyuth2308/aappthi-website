@@ -153,7 +153,7 @@ export default function Navbar() {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: "100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="fixed inset-y-0 right-0 z-40 w-72 bg-[#0B1F3A] shadow-2xl lg:hidden overflow-y-auto"
+                        className="fixed inset-y-0 right-0 z-[60] w-72 bg-[#0B1F3A] shadow-2xl lg:hidden overflow-y-auto"
                     >
                         <div className="flex items-center justify-between p-4 border-b border-white/10">
                             <span className="text-white font-bold">Navigation</span>
@@ -211,7 +211,7 @@ export default function Navbar() {
             {/* Mobile overlay */}
             {mobileOpen && (
                 <div
-                    className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+                    className="fixed inset-0 z-[55] bg-black/50 lg:hidden"
                     onClick={() => setMobileOpen(false)}
                 />
             )}

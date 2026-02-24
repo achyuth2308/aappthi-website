@@ -131,33 +131,41 @@ export default function AwardsPage() {
         <div className="min-h-screen bg-white">
 
             {/* HERO */}
-            <section className="pt-32 pb-12 text-center">
-                <div className="max-w-4xl mx-auto px-4">
-                    <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/5 mb-6"
-                    >
-                        <Trophy size={14} className="text-[#C9A84C]" />
-                        <span className="text-[#C9A84C] text-xs font-bold uppercase tracking-[0.2em]">
-                            Industry Honors
-                        </span>
-                    </motion.div>
+            <section className="bg-navy-gradient pt-32 pb-20">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-2xl">
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/5 mb-6"
+                        >
+                            <Trophy size={14} className="text-[#C9A84C]" />
+                            <span className="text-[#C9A84C] text-xs font-bold uppercase tracking-[0.2em]">
+                                Industry Honors
+                            </span>
+                        </motion.div>
 
-                    <h1 className="text-5xl font-black mb-6">
-                        <span className="text-[#0B1F3A]">
-                            Excellence
-                        </span>{" "}
-                        <span className="text-[#C9A84C]">
-                            Recognized
-                        </span>
-                    </h1>
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            className="text-4xl sm:text-5xl font-bold text-white mb-5"
+                        >
+                            Excellence{" "}
+                            <span className="text-[#C9A84C]">Recognized</span>
+                        </motion.h1>
 
-                    <p className="text-gray-500 text-lg">
-                        Our commitment to digital transformation
-                        has been celebrated by leading global
-                        infrastructure and technology forums.
-                    </p>
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="text-white/60 text-lg leading-relaxed"
+                        >
+                            Our commitment to digital transformation
+                            has been celebrated by leading global
+                            infrastructure and technology forums.
+                        </motion.p>
+                    </div>
                 </div>
             </section>
 
