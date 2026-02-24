@@ -103,17 +103,7 @@ export default function IndustryEngagementsPage() {
                 </div>
             </section>
 
-            {/* Note */}
-            <section className="section-padding bg-[#F8F9FA]">
-                <div className="max-w-3xl mx-auto px-4 text-center">
-                    <div className="bg-white rounded-2xl p-8 border border-gray-100">
-                        <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-wider mb-3">Editorial Note</p>
-                        <p className="text-gray-500 text-sm leading-relaxed">
-                            This page describes our organization's general approach to international business awareness and networking. All references to industry engagements reflect the ongoing learning and professional development activities of our management team. No specific event dates, locations, or third-party organizations are claimed or implied.
-                        </p>
-                    </div>
-                </div>
-            </section>
+
         </>
     );
 }

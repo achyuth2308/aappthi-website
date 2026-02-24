@@ -59,15 +59,7 @@ export default function GlobalExposurePage() {
                 </div>
             </section>
 
-            {/* Disclaimer */}
-            <div className="bg-amber-50 border-b border-amber-200">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-start gap-3">
-                    <AlertTriangle size={18} className="text-amber-600 shrink-0 mt-0.5" />
-                    <p className="text-amber-800 text-sm">
-                        <strong>Disclaimer:</strong> Company names listed on this page are referenced for industry research and educational purposes only. Aapthi Marketing Solutions has no formal partnership or business relationship with any of the companies mentioned. This is a concept website demonstration.
-                    </p>
-                </div>
-            </div>
+
 
             {/* Sectors */}
             <section className="section-padding bg-white">

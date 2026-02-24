@@ -155,7 +155,7 @@ export default function ContactPage() {
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
                                 >
-                                    <div className="bg-[#F8F9FA] rounded-2xl p-8">
+                                    <div id="contact-form" className="bg-[#F8F9FA] rounded-2xl p-8">
                                         <h3 className="text-[#0B1F3A] font-bold text-xl mb-6">Send a Message</h3>
                                         <form onSubmit={handleSubmit} className="space-y-5">
                                             <div className="grid sm:grid-cols-2 gap-5">
