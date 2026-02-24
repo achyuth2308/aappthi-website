@@ -1,0 +1,71 @@
+// Prisma Schema — Aapthi Marketing Solutions
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ContactMessage {
+  id           Int       @id @default(autoincrement())
+  name         String
+  email        String
+  phone        String?
+  message      String
+  isReplied    Boolean   @default(false) @map("is_replied")
+  replyMessage String?   @map("reply_message")
+  repliedAt    DateTime? @map("replied_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  @@map("contact_messages")
+}
+
+model Applicant {
+  id              String    @id @default(uuid())
+  name            String
+  email           String
+  phone           String
+  positionApplied String    @map("position_applied")
+  resumeUrl       String?   @map("resume_url")
+  status          String    @default("pending")
+  adminReply      String?   @map("admin_reply")
+  repliedAt       DateTime? @map("replied_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  @@map("applicants")
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  category    String
+  year        Int
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("projects")
+}
+
+model Award {
+  id           Int      @id @default(autoincrement())
+  title        String
+  organization String
+  category     String
+  description  String
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("awards")
+}
+
+model AdminContent {
+  id        Int      @id @default(autoincrement())
+  section   String   @unique
+  content   String
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("admin_content")
+}
