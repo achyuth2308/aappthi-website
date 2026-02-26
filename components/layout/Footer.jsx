@@ -141,14 +141,43 @@ export default function Footer() {
                             Contact
                         </h4>
                         <ul className="space-y-3">
+                            {/* Address 1 - Head Office */}
                             <li className="flex items-start gap-2.5">
                                 <MapPin size={15} className="text-[#C9A84C] mt-0.5 shrink-0" />
-                                <span className="text-white/55 text-sm">
-                                    Aapthi Marketing Solutions Pvt Ltd,<br />
-                                    PR2W+2RH, Nai Duniya, Revenue <br />
-                                    Colony, Indira Gandhi Nagar, Indore,<br />
-                                    Madhya Pradesh, India
-                                </span>
+                                <div className="flex flex-col gap-0.5">
+                                    <span className="text-[#C9A84C] text-xs font-semibold uppercase tracking-wider">Head Office</span>
+                                    <span className="text-white/55 text-sm">
+                                        Aapthi Marketing Solutions Pvt Ltd,<br />
+                                        PR2W+2RH, Nai Duniya, Revenue Colony,<br />
+                                        Indira Gandhi Nagar, Indore,<br />
+                                        Madhya Pradesh 452009, India
+                                    </span>
+                                </div>
+                            </li>
+                            {/* Address 2 - Hyderabad */}
+                            <li className="flex items-start gap-2.5">
+                                <MapPin size={15} className="text-[#C9A84C] mt-0.5 shrink-0" />
+                                <div className="flex flex-col gap-0.5">
+                                    <span className="text-[#C9A84C] text-xs font-semibold uppercase tracking-wider">Hyderabad Office</span>
+                                    <span className="text-white/55 text-sm">
+                                        3rd Floor, Image Hospitals Ln,<br />
+                                        Pratap Nagar, Nagarjuna Nagar Colony,<br />
+                                        Yella Reddy Guda, Hyderabad,<br />
+                                        Telangana 500073, India
+                                    </span>
+                                </div>
+                            </li>
+                            {/* Address 3 - Noida */}
+                            <li className="flex items-start gap-2.5">
+                                <MapPin size={15} className="text-[#C9A84C] mt-0.5 shrink-0" />
+                                <div className="flex flex-col gap-0.5">
+                                    <span className="text-[#C9A84C] text-xs font-semibold uppercase tracking-wider">Noida Office</span>
+                                    <span className="text-white/55 text-sm">
+                                        Hotel White Castle, Dadri Main Rd,<br />
+                                        Bhangel, Sector 82, Noida,<br />
+                                        Uttar Pradesh 201304, India
+                                    </span>
+                                </div>
                             </li>
                             <li className="flex items-center gap-2.5">
                                 <Mail size={15} className="text-[#C9A84C] shrink-0" />

@@ -32,6 +32,12 @@ export default function Navbar() {
     const pathname = usePathname();
     const videoRef = useRef(null);
 
+    // Pages that have a light/white background behind the navbar (no dark hero at top).
+    // On these pages the navbar must always be solid dark navy, never transparent.
+    const lightBgPages = ["/apply", "/contact", "/careers", "/team", "/awards", "/projects", "/services", "/about", "/global-exposure", "/industry-engagements"];
+    const isLightBgPage = lightBgPages.some((p) => pathname === p || pathname.startsWith(p + "/"));
+    const navSolid = isScrolled || isLightBgPage;
+
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 20);
         window.addEventListener("scroll", handleScroll);
@@ -54,7 +60,7 @@ export default function Navbar() {
     return (
         <>
             <nav
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navSolid
                     ? "bg-[#07172b]/95 backdrop-blur-md shadow-lg shadow-black/20"
                     : "bg-transparent"
                     }`}

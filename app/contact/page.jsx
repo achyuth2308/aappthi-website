@@ -184,13 +184,24 @@ export default function ContactPage() {
                                             </div>
                                             <div>
                                                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Phone Number</label>
-                                                <input
-                                                    type="tel"
-                                                    value={form.phone}
-                                                    onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
-                                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/30 focus:border-[#C9A84C] text-sm transition-all"
-                                                    placeholder="+91 XXXXX XXXXX"
-                                                />
+                                                <div className="flex rounded-xl border border-gray-200 bg-white focus-within:ring-2 focus-within:ring-[#C9A84C]/30 focus-within:border-[#C9A84C] transition-all overflow-hidden">
+                                                    <span className="flex items-center px-3 text-sm font-semibold text-[#0B1F3A] bg-gray-50 border-r border-gray-200 select-none shrink-0">+91</span>
+                                                    <input
+                                                        type="tel"
+                                                        value={form.phone}
+                                                        onChange={(e) => {
+                                                            const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+                                                            // First digit must be 6–9 (valid Indian mobile)
+                                                            if (digits.length > 0 && !/^[6-9]/.test(digits)) return;
+                                                            setForm((p) => ({ ...p, phone: digits }));
+                                                        }}
+                                                        maxLength={10}
+                                                        pattern="[6-9][0-9]{9}"
+                                                        inputMode="numeric"
+                                                        className="flex-1 px-3 py-3 text-sm bg-white focus:outline-none"
+                                                        placeholder="XXXXX-XXXXX"
+                                                    />
+                                                </div>
                                             </div>
                                             <div>
                                                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Message *</label>

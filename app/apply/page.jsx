@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Send, Upload, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 
@@ -27,6 +27,13 @@ export default function ApplyPage() {
     const [resume, setResume] = useState(null);
     const [status, setStatus] = useState("idle"); // idle | loading | success | error
     const [errorMsg, setErrorMsg] = useState("");
+
+    useEffect(() => {
+        if (status === "success") {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    }, [status]);
+
 
     function handleChange(e) {
         setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -88,28 +95,41 @@ export default function ApplyPage() {
 
     if (status === "success") {
         return (
-            <div className="min-h-screen bg-[#F8F9FA] pt-32 pb-20">
-                <div className="max-w-lg mx-auto px-4 text-center">
+            <div className="min-h-screen bg-[#F8F9FA] pt-28 pb-20">
+                <div className="max-w-2xl mx-auto px-4">
                     <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: "spring", damping: 15 }}
-                        className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="bg-white rounded-3xl shadow-sm border border-gray-100 p-10 sm:p-14 text-center"
                     >
-                        <CheckCircle size={40} className="text-green-600" />
+                        <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ type: "spring", damping: 12, delay: 0.1 }}
+                            className="w-24 h-24 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-6"
+                        >
+                            <CheckCircle size={52} className="text-green-500" />
+                        </motion.div>
+                        <h1 className="text-3xl sm:text-4xl font-bold text-[#0B1F3A] mb-4">
+                            Application Submitted!
+                        </h1>
+                        <p className="text-gray-500 text-base leading-relaxed mb-3">
+                            Thank you, <strong className="text-[#0B1F3A]">{formData.name}</strong>!
+                        </p>
+                        <p className="text-gray-500 text-base leading-relaxed mb-8">
+                            Your application for <strong className="text-[#0B1F3A]">{formData.position}</strong> has been received.
+                            Our team will review your profile and reach out to you at <strong className="text-[#0B1F3A]">{formData.email}</strong>.
+                        </p>
+                        <div className="w-full h-px bg-gray-100 mb-8" />
+                        <a
+                            href="/"
+                            className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-semibold text-[#0B1F3A] rounded-xl hover:scale-105 hover:shadow-lg hover:shadow-yellow-500/20 transition-all duration-200"
+                            style={{ background: "linear-gradient(135deg, #C9A84C, #E2C06D)" }}
+                        >
+                            Back to Home
+                        </a>
                     </motion.div>
-                    <h1 className="text-3xl font-bold text-[#0B1F3A] mb-3">Application Submitted!</h1>
-                    <p className="text-gray-500 mb-6">
-                        Thank you, <strong>{formData.name}</strong>. Your application for{" "}
-                        <strong>{formData.position}</strong> has been received. We will review your profile and get back to you via email.
-                    </p>
-                    <a
-                        href="/"
-                        className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-[#0B1F3A] rounded-xl hover:scale-105 transition-all"
-                        style={{ background: "linear-gradient(135deg, #C9A84C, #E2C06D)" }}
-                    >
-                        Back to Home
-                    </a>
                 </div>
             </div>
         );
@@ -189,14 +209,25 @@ export default function ApplyPage() {
                         {/* Phone */}
                         <div>
                             <label className="block text-sm font-semibold text-[#0B1F3A] mb-1.5">Phone Number *</label>
-                            <input
-                                name="phone"
-                                type="tel"
-                                value={formData.phone}
-                                onChange={handleChange}
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/30 focus:border-[#C9A84C] transition"
-                                placeholder="+91 9876543210"
-                            />
+                            <div className="flex rounded-xl border border-gray-200 focus-within:ring-2 focus-within:ring-[#C9A84C]/30 focus-within:border-[#C9A84C] transition-all overflow-hidden">
+                                <span className="flex items-center px-3 text-sm font-semibold text-[#0B1F3A] bg-gray-50 border-r border-gray-200 select-none shrink-0">+91</span>
+                                <input
+                                    name="phone"
+                                    type="tel"
+                                    value={formData.phone}
+                                    onChange={(e) => {
+                                        const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+                                        // First digit must be 6–9 (valid Indian mobile)
+                                        if (digits.length > 0 && !/^[6-9]/.test(digits)) return;
+                                        setFormData((prev) => ({ ...prev, phone: digits }));
+                                    }}
+                                    maxLength={10}
+                                    pattern="[6-9][0-9]{9}"
+                                    inputMode="numeric"
+                                    className="flex-1 px-3 py-3 bg-white text-sm focus:outline-none"
+                                    placeholder="XXXXX-XXXXX"
+                                />
+                            </div>
                         </div>
 
                         {/* Position */}
