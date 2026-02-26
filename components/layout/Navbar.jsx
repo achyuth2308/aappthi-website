@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
@@ -31,6 +30,7 @@ export default function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const pathname = usePathname();
+    const videoRef = useRef(null);
 
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -43,6 +43,14 @@ export default function Navbar() {
         setDropdownOpen(false);
     }, [pathname]);
 
+    // Replay logo animation on every page refresh or route change
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.currentTime = 0;
+            videoRef.current.play().catch(() => { });
+        }
+    }, [pathname]);
+
     return (
         <>
             <nav
@@ -53,15 +61,18 @@ export default function Navbar() {
             >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16 lg:h-20">
-                        {/* Logo */}
+                        {/* Logo Video */}
                         <Link href="/" className="flex items-center gap-2 group">
-                            <Image
-                                src="/Aapthi_logo.png"
-                                alt="Aapthi Marketing Solutions"
-                                width={44}
-                                height={44}
+                            <video
+                                ref={videoRef}
+                                src="/logo_ani_transparent.webm"
+                                autoPlay
+                                muted
+                                playsInline
+                                width={56}
+                                height={56}
                                 className="rounded-lg object-contain"
-                                priority
+                                style={{ width: 56, height: 56 }}
                             />
                             <div>
                                 <div className="text-white font-bold text-sm leading-tight group-hover:text-[#C9A84C] transition-colors duration-200">
