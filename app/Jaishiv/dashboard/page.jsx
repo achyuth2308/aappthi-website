@@ -4,15 +4,15 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
-    MessageSquare, Users, Clock, CheckCircle, Mail,
+    MessageSquare, Users, Clock, CheckCircle, Mail, XCircle,
     Loader2, LogOut, LayoutDashboard, BookOpen, Briefcase,
 } from "lucide-react";
 import Link from "next/link";
 
 const NAV_ITEMS = [
-    { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-    { label: "Contacts", href: "/admin/contacts", icon: MessageSquare },
-    { label: "Applications", href: "/admin/applications", icon: Briefcase },
+    { label: "Dashboard", href: "/Jaishiv/dashboard", icon: LayoutDashboard },
+    { label: "Contacts", href: "/Jaishiv/contacts", icon: MessageSquare },
+    { label: "Applications", href: "/Jaishiv/applications", icon: Briefcase },
 ];
 
 function AdminHeader({ onLogout }) {
@@ -55,7 +55,7 @@ export default function AdminDashboardPage() {
 
     async function handleLogout() {
         await fetch("/api/admin/logout", { method: "POST" });
-        router.push("/admin/login");
+        router.push("/Jaishiv/login");
     }
 
     useEffect(() => {
@@ -67,7 +67,7 @@ export default function AdminDashboardPage() {
                 ]);
 
                 if (contactsRes.status === 401 || applicantsRes.status === 401) {
-                    router.push("/admin/login");
+                    router.push("/Jaishiv/login");
                     return;
                 }
 
@@ -81,9 +81,8 @@ export default function AdminDashboardPage() {
                     totalContacts: contacts.length,
                     unrepliedContacts: contacts.filter((c) => !c.isReplied).length,
                     totalApplicants: applicants.length,
-                    pendingApplicants: applicants.filter((a) => a.status === "pending").length,
-                    shortlistedApplicants: applicants.filter((a) => a.status === "shortlisted").length,
                     approvedApplicants: applicants.filter((a) => a.status === "approved").length,
+                    rejectedApplicants: applicants.filter((a) => a.status === "rejected").length,
                 });
             } catch (err) {
                 console.error("Failed to fetch stats:", err);
@@ -99,9 +98,8 @@ export default function AdminDashboardPage() {
             { label: "Total Contacts", value: stats.totalContacts, icon: MessageSquare, color: "border-l-blue-500", bg: "bg-blue-50" },
             { label: "Unreplied", value: stats.unrepliedContacts, icon: Mail, color: "border-l-amber-500", bg: "bg-amber-50" },
             { label: "Total Applicants", value: stats.totalApplicants, icon: Users, color: "border-l-indigo-500", bg: "bg-indigo-50" },
-            { label: "Pending", value: stats.pendingApplicants, icon: Clock, color: "border-l-orange-500", bg: "bg-orange-50" },
-            { label: "Shortlisted", value: stats.shortlistedApplicants, icon: BookOpen, color: "border-l-cyan-500", bg: "bg-cyan-50" },
             { label: "Approved", value: stats.approvedApplicants, icon: CheckCircle, color: "border-l-green-500", bg: "bg-green-50" },
+            { label: "Rejected", value: stats.rejectedApplicants, icon: XCircle, color: "border-l-red-500", bg: "bg-red-50" },
         ]
         : [];
 
@@ -142,7 +140,7 @@ export default function AdminDashboardPage() {
 
                         {/* Quick Links */}
                         <div className="grid md:grid-cols-2 gap-4">
-                            <Link href="/admin/contacts" className="group">
+                            <Link href="/Jaishiv/contacts" className="group">
                                 <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm hover:shadow-md hover:border-[#C9A84C]/30 transition-all">
                                     <div className="flex items-center gap-3 mb-2">
                                         <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
@@ -155,7 +153,7 @@ export default function AdminDashboardPage() {
                                     <p className="text-gray-400 text-sm">View and reply to contact form submissions</p>
                                 </div>
                             </Link>
-                            <Link href="/admin/applications" className="group">
+                            <Link href="/Jaishiv/applications" className="group">
                                 <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm hover:shadow-md hover:border-[#C9A84C]/30 transition-all">
                                     <div className="flex items-center gap-3 mb-2">
                                         <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center">

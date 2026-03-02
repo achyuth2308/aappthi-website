@@ -10,7 +10,7 @@ const contactInfo = [
     { icon: MapPin, label: "Address", value: "Aapthi Marketing Solutions Pvt Ltd\nPR2W+2RH, Nai Duniya, Revenue Colony, Indira Gandhi Nagar, Indore, Madhya Pradesh 452009" },
     { icon: MapPin, label: "Address", value: "Aapthi Marketing Solutions Pvt Ltd\nHotel white castle, Dadri Main Rd, Bhangel, Sector 82, Noida, Uttar Pradesh 201304" },
     { icon: MapPin, label: "Address", value: "Aapthi Marketing Solutions Pvt Ltd\n3rd Floor, Image Hospitals Ln, Pratap Nagar, Nagarjuna Nagar colony, Yella Reddy Guda, Hyderabad, Telangana 500073" },
-    { icon: Mail, label: "Email", value: "hr@aapthisolutions.com", href: "mailto:info@aapthi.com" },
+    { icon: Mail, label: "Email", value: "hr@aapthisolutions.com", href: "mailto:hr@aapthisolutions.com" },
     { icon: Phone, label: "Phone", value: "+91 9499886597", href: "tel:+91 9499886597" },
 ];
 

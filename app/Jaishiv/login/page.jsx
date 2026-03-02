@@ -24,7 +24,7 @@ export default function AdminLoginPage() {
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data.error);
-            router.push("/admin/dashboard");
+            router.push("/Jaishiv/dashboard");
         } catch (err) {
             setError(err.message);
         } finally {

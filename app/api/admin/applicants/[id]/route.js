@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyAdminSession } from "@/lib/admin-auth";
 
-const VALID_STATUSES = ["pending", "shortlisted", "rejected", "approved"];
+const VALID_STATUSES = ["approved", "rejected"];
 
 export async function PUT(request, { params }) {
     if (!verifyAdminSession(request)) {
@@ -27,19 +27,24 @@ export async function PUT(request, { params }) {
         });
 
         // Send status update email
+        let emailSent = false;
+        let emailError = null;
         try {
             const { sendStatusUpdateEmail } = await import("@/lib/email");
-            await sendStatusUpdateEmail(
+            const result = await sendStatusUpdateEmail(
                 applicant.name,
                 applicant.email,
                 status,
                 applicant.positionApplied
             );
+            emailSent = result?.success || false;
+            emailError = result?.error || null;
         } catch (err) {
             console.error("[ADMIN] Email send failed:", err.message);
+            emailError = err.message;
         }
 
-        return NextResponse.json({ success: true, applicant });
+        return NextResponse.json({ success: true, applicant, emailSent, emailError });
     } catch (err) {
         console.error("[ADMIN UPDATE]", err);
         return NextResponse.json({ error: "Failed to update applicant." }, { status: 500 });
