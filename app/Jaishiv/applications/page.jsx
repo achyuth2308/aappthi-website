@@ -11,14 +11,12 @@ import {
 } from "lucide-react";
 
 const NAV_ITEMS = [
-    { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-    { label: "Contacts", href: "/admin/contacts", icon: MessageSquare },
-    { label: "Applications", href: "/admin/applications", icon: Briefcase },
+    { label: "Dashboard", href: "/Jaishiv/dashboard", icon: LayoutDashboard },
+    { label: "Contacts", href: "/Jaishiv/contacts", icon: MessageSquare },
+    { label: "Applications", href: "/Jaishiv/applications", icon: Briefcase },
 ];
 
 const STATUS_CONFIG = {
-    pending: { label: "Pending", color: "bg-amber-100 text-amber-700 border-amber-200", icon: Clock },
-    shortlisted: { label: "Shortlisted", color: "bg-blue-100 text-blue-700 border-blue-200", icon: Star },
     approved: { label: "Approved", color: "bg-green-100 text-green-700 border-green-200", icon: CheckCircle },
     rejected: { label: "Rejected", color: "bg-red-100 text-red-700 border-red-200", icon: XCircle },
 };
@@ -37,9 +35,9 @@ function AdminHeader({ onLogout }) {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition ${item.href === "/admin/applications"
-                                        ? "text-white bg-white/10"
-                                        : "text-white/60 hover:text-white hover:bg-white/10"
+                                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition ${item.href === "/Jaishiv/applications"
+                                    ? "text-white bg-white/10"
+                                    : "text-white/60 hover:text-white hover:bg-white/10"
                                     }`}
                             >
                                 <item.icon size={14} />
@@ -61,7 +59,7 @@ function AdminHeader({ onLogout }) {
 
 /* ── Status Badge ───────────────────────── */
 function StatusBadge({ status }) {
-    const config = STATUS_CONFIG[status] || STATUS_CONFIG.pending;
+    const config = STATUS_CONFIG[status] || { label: status, color: "bg-gray-100 text-gray-700 border-gray-200", icon: Clock };
     return (
         <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold border ${config.color}`}>
             {config.label}
@@ -94,8 +92,8 @@ function StatusDropdown({ current, onUpdate, loading }) {
                                 setOpen(false);
                             }}
                             className={`block w-full text-left px-3 py-2 text-xs font-medium transition ${key === current
-                                    ? "text-gray-300 cursor-default"
-                                    : "text-gray-600 hover:bg-gray-50"
+                                ? "text-gray-300 cursor-default"
+                                : "text-gray-600 hover:bg-gray-50"
                                 }`}
                         >
                             {cfg.label}
@@ -264,10 +262,11 @@ export default function AdminApplicationsPage() {
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(null);
     const [replyApplicant, setReplyApplicant] = useState(null);
+    const [toast, setToast] = useState(null);
 
     async function handleLogout() {
         await fetch("/api/admin/logout", { method: "POST" });
-        router.push("/admin/login");
+        router.push("/Jaishiv/login");
     }
 
     async function fetchApplicants() {
@@ -275,7 +274,7 @@ export default function AdminApplicationsPage() {
         try {
             const res = await fetch("/api/admin/applicants");
             if (res.status === 401) {
-                router.push("/admin/login");
+                router.push("/Jaishiv/login");
                 return;
             }
             const data = await res.json();
@@ -299,15 +298,27 @@ export default function AdminApplicationsPage() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: newStatus }),
             });
+            const data = await res.json();
+
             if (res.ok) {
                 setApplicants((prev) =>
                     prev.map((a) => (a.id === id ? { ...a, status: newStatus } : a))
                 );
+
+                if (data.emailSent) {
+                    setToast({ type: "success", message: "Status updated and email sent!" });
+                } else {
+                    setToast({ type: "warning", message: `Status updated, but email failed: ${data.emailError || "Unknown error"}. Check DNS verification.` });
+                }
+            } else {
+                setToast({ type: "error", message: data.error || "Failed to update status" });
             }
         } catch (err) {
             console.error("Status update failed:", err);
+            setToast({ type: "error", message: "Network error during update" });
         } finally {
             setUpdating(null);
+            setTimeout(() => setToast(null), 5000);
         }
     }
 
@@ -323,8 +334,6 @@ export default function AdminApplicationsPage() {
     // Count stats
     const counts = {
         total: applicants.length,
-        pending: applicants.filter((a) => a.status === "pending").length,
-        shortlisted: applicants.filter((a) => a.status === "shortlisted").length,
         approved: applicants.filter((a) => a.status === "approved").length,
         rejected: applicants.filter((a) => a.status === "rejected").length,
     };
@@ -332,13 +341,36 @@ export default function AdminApplicationsPage() {
     return (
         <div className="min-h-screen bg-gray-50">
             <AdminHeader onLogout={handleLogout} />
+
+            {/* Toast Notification */}
+            <AnimatePresence>
+                {toast && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className={`fixed top-4 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 rounded-xl shadow-lg border flex items-center gap-3 min-w-[320px] ${toast.type === "success" ? "bg-green-50 border-green-200 text-green-800" :
+                            toast.type === "warning" ? "bg-amber-50 border-amber-200 text-amber-800" :
+                                "bg-red-50 border-red-200 text-red-800"
+                            }`}
+                    >
+                        {toast.type === "success" ? <CheckCircle size={18} /> :
+                            toast.type === "warning" ? <Mail size={18} /> : <XCircle size={18} />}
+                        <p className="text-sm font-medium">{toast.message}</p>
+                        <button onClick={() => setToast(null)} className="ml-auto opacity-50 hover:opacity-100 transition">
+                            <X size={14} />
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <div>
                         <h2 className="text-2xl font-bold text-[#0B1F3A]">Job Applications</h2>
                         <p className="text-gray-400 text-sm mt-1">
-                            {counts.total} total · {counts.pending} pending · {counts.shortlisted} shortlisted
+                            {counts.total} total · {counts.approved} approved · {counts.rejected} rejected
                         </p>
                     </div>
                     <button
@@ -353,8 +385,6 @@ export default function AdminApplicationsPage() {
                 <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
                     {[
                         { label: "Total", count: counts.total, color: "border-l-[#0B1F3A]", icon: Users },
-                        { label: "Pending", count: counts.pending, color: "border-l-amber-500", icon: Clock },
-                        { label: "Shortlisted", count: counts.shortlisted, color: "border-l-blue-500", icon: Star },
                         { label: "Approved", count: counts.approved, color: "border-l-green-500", icon: CheckCircle },
                         { label: "Rejected", count: counts.rejected, color: "border-l-red-500", icon: XCircle },
                     ].map((stat) => (

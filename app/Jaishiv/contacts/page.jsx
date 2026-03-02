@@ -11,9 +11,9 @@ import {
 } from "lucide-react";
 
 const NAV_ITEMS = [
-    { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-    { label: "Contacts", href: "/admin/contacts", icon: MessageSquare },
-    { label: "Applications", href: "/admin/applications", icon: Briefcase },
+    { label: "Dashboard", href: "/Jaishiv/dashboard", icon: LayoutDashboard },
+    { label: "Contacts", href: "/Jaishiv/contacts", icon: MessageSquare },
+    { label: "Applications", href: "/Jaishiv/applications", icon: Briefcase },
 ];
 
 function AdminHeader({ onLogout }) {
@@ -30,9 +30,9 @@ function AdminHeader({ onLogout }) {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition ${item.href === "/admin/contacts"
-                                        ? "text-white bg-white/10"
-                                        : "text-white/60 hover:text-white hover:bg-white/10"
+                                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition ${item.href === "/Jaishiv/contacts"
+                                    ? "text-white bg-white/10"
+                                    : "text-white/60 hover:text-white hover:bg-white/10"
                                     }`}
                             >
                                 <item.icon size={14} />
@@ -206,7 +206,7 @@ export default function AdminContactsPage() {
 
     async function handleLogout() {
         await fetch("/api/admin/logout", { method: "POST" });
-        router.push("/admin/login");
+        router.push("/Jaishiv/login");
     }
 
     async function fetchContacts() {
@@ -214,7 +214,7 @@ export default function AdminContactsPage() {
         try {
             const res = await fetch("/api/admin/contacts");
             if (res.status === 401) {
-                router.push("/admin/login");
+                router.push("/Jaishiv/login");
                 return;
             }
             const data = await res.json();
