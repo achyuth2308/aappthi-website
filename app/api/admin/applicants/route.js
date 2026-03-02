@@ -16,8 +16,12 @@ export async function GET(request) {
         return NextResponse.json({ applicants });
     } catch (err) {
         console.error("[ADMIN APPLICANTS]", err.message);
-        // Fallback: return empty list if DB is not configured
-        return NextResponse.json({ applicants: [], fallback: true });
+        return NextResponse.json({
+            applicants: [],
+            fallback: true,
+            error: err.message,
+            db_configured: !!process.env.DATABASE_URL
+        });
     }
 }
 

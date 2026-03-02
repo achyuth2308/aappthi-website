@@ -16,6 +16,11 @@ export async function GET(request) {
         return NextResponse.json({ contacts });
     } catch (err) {
         console.error("[ADMIN CONTACTS]", err.message);
-        return NextResponse.json({ contacts: [], fallback: true });
+        return NextResponse.json({
+            contacts: [],
+            fallback: true,
+            error: err.message,
+            db_configured: !!process.env.DATABASE_URL
+        });
     }
 }
