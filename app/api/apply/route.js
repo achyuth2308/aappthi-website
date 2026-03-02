@@ -37,31 +37,36 @@ export async function POST(request) {
             return NextResponse.json({ error: "Resume file is required." }, { status: 400 });
         }
 
-        // Save resume
+        // Save resume (Note: This will likely fail on Vercel/Serverless as fs is read-only)
         let resumeUrl = null;
         try {
             resumeUrl = await saveResume(resumeFile);
         } catch (err) {
-            console.error("[APPLY] Failed to save resume:", err.message);
+            console.warn("[APPLY] Runtime filesystem write failed (Serverless env?):", err.message);
+            // On serverless, we'd normally use S3/Cloudinary. 
+            // For now, we continue so the DB record can still be created if possible.
         }
 
         // Save to database
         let applicant = null;
-        try {
-            const { prisma } = await import("@/lib/prisma");
-            applicant = await prisma.applicant.create({
-                data: {
-                    name,
-                    email,
-                    phone,
-                    positionApplied: position,
-                    resumeUrl,
-                    status: "pending",
-                },
-            });
-        } catch (err) {
-            console.error("[APPLY] Database save failed (running without DB?):", err.message);
-            // Continue even without DB — the resume is saved
+        if (!process.env.DATABASE_URL) {
+            console.error("[APPLY] CRITICAL: DATABASE_URL is not set in environment variables!");
+        } else {
+            try {
+                const { prisma } = await import("@/lib/prisma");
+                applicant = await prisma.applicant.create({
+                    data: {
+                        name,
+                        email,
+                        phone,
+                        positionApplied: position,
+                        resumeUrl,
+                        status: "pending",
+                    },
+                });
+            } catch (err) {
+                console.error("[APPLY] Database save failed:", err.message);
+            }
         }
 
         // Send email
