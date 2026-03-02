@@ -43,14 +43,13 @@ export async function POST(request) {
             resumeUrl = await saveResume(resumeFile);
         } catch (err) {
             console.warn("[APPLY] Runtime filesystem write failed (Serverless env?):", err.message);
-            // On serverless, we'd normally use S3/Cloudinary. 
-            // For now, we continue so the DB record can still be created if possible.
+            // On Vercel, we continue so the DB record can still be created even if file save fails locally
         }
 
         // Save to database
         let applicant = null;
         if (!process.env.DATABASE_URL) {
-            console.error("[APPLY] CRITICAL: DATABASE_URL is not set!");
+            console.error("[APPLY] CRITICAL: DATABASE_URL is missing in environment variables!");
         } else {
             try {
                 const { prisma } = await import("@/lib/prisma");
