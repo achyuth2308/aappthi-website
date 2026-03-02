@@ -50,7 +50,7 @@ export async function POST(request) {
         // Save to database
         let applicant = null;
         if (!process.env.DATABASE_URL) {
-            console.error("[APPLY] CRITICAL: DATABASE_URL is not set in environment variables!");
+            console.error("[APPLY] CRITICAL: DATABASE_URL is not set!");
         } else {
             try {
                 const { prisma } = await import("@/lib/prisma");
