@@ -15,22 +15,43 @@ const openings = [
 ];
 
 export default function CareersPage() {
-    const [formData, setFormData] = useState({ name: "", email: "", position: "", message: "" });
+    const [formData, setFormData] = useState({ name: "", email: "", phone: "", position: "", message: "" });
+    const [resume, setResume] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!resume) {
+            alert("Please upload your resume.");
+            return;
+        }
+
         setLoading(true);
         try {
-            const res = await fetch("/api/careers/apply", {
+            const data = new FormData();
+            data.append("name", formData.name);
+            data.append("email", formData.email);
+            data.append("phone", formData.phone);
+            data.append("position", formData.position);
+            data.append("message", formData.message);
+            data.append("resume", resume);
+
+            const res = await fetch("/api/apply", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
+                body: data,
             });
-            if (res.ok) setSubmitted(true);
+
+            if (res.ok) {
+                setSubmitted(true);
+            } else {
+                const err = await res.json();
+                alert(err.error || "Failed to submit application.");
+            }
         } catch (err) {
             console.error(err);
+            alert("An error occurred. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -152,7 +173,7 @@ export default function CareersPage() {
                                 onSubmit={handleSubmit}
                                 className="max-w-2xl mx-auto space-y-5"
                             >
-                                <div className="grid sm:grid-cols-2 gap-5">
+                                <div className="grid sm:grid-cols-3 gap-5">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name *</label>
                                         <input
@@ -165,7 +186,7 @@ export default function CareersPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address *</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Email *</label>
                                         <input
                                             type="email"
                                             required
@@ -173,6 +194,17 @@ export default function CareersPage() {
                                             onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/30 focus:border-[#C9A84C] text-sm transition-all"
                                             placeholder="your@email.com"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Phone *</label>
+                                        <input
+                                            type="tel"
+                                            required
+                                            value={formData.phone}
+                                            onChange={(e) => setFormData((p) => ({ ...p, phone: e.target.value }))}
+                                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/30 focus:border-[#C9A84C] text-sm transition-all"
+                                            placeholder="+91..."
                                         />
                                     </div>
                                 </div>
@@ -197,10 +229,30 @@ export default function CareersPage() {
                                         placeholder="Briefly describe your experience and interest..."
                                     />
                                 </div>
-                                <div className="p-4 rounded-xl border-2 border-dashed border-gray-200 flex items-center gap-3 text-gray-400 hover:border-[#C9A84C]/30 transition-colors cursor-pointer">
-                                    <Upload size={18} />
-                                    <span className="text-sm">Resume upload — send your CV directly to <strong className="text-[#C9A84C]">hr@aapthi.com</strong></span>
+
+                                {/* Refined Upload Component */}
+                                <div>
+                                    <label className="p-4 rounded-xl border-2 border-dashed border-gray-200 flex items-center gap-3 text-gray-400 hover:border-[#C9A84C]/50 transition-colors cursor-pointer bg-gray-50/50">
+                                        <Upload size={18} className={resume ? "text-green-600" : "text-gray-400"} />
+                                        <span className="text-sm">
+                                            {resume ? (
+                                                <span className="text-[#0B1F3A] font-medium">{resume.name}</span>
+                                            ) : (
+                                                <>
+                                                    Resume upload — send your CV directly to{" "}
+                                                    <strong className="text-[#C9A84C]">hr@aapthi.com</strong>
+                                                </>
+                                            )}
+                                        </span>
+                                        <input
+                                            type="file"
+                                            accept=".pdf"
+                                            onChange={(e) => setResume(e.target.files?.[0] || null)}
+                                            className="hidden"
+                                        />
+                                    </label>
                                 </div>
+
                                 <div className="flex items-center justify-between gap-4 pt-2">
                                     <p className="text-gray-400 text-xs">
                                         Or email your resume directly to{" "}

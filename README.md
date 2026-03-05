@@ -144,10 +144,10 @@ vercel
 
 ### PostgreSQL on Vercel
 
-Use **Vercel Postgres** (built-in) or **Supabase**:
+Use **Vercel Postgres** (built-in) or **Aiven**:
 
 ```env
-DATABASE_URL="postgres://..." # From Vercel/Supabase dashboard
+DATABASE_URL="postgres://..." # From Vercel/Aiven dashboard
 ```
 
 Then run:
