@@ -51,6 +51,9 @@ export async function POST(request) {
         let applicant = null;
         if (!process.env.DATABASE_URL) {
             console.error("[APPLY] CRITICAL: DATABASE_URL is not set in environment variables!");
+            return NextResponse.json({
+                error: "Database configuration missing. Please set DATABASE_URL in Vercel."
+            }, { status: 500 });
         } else {
             try {
                 const { prisma } = await import("@/lib/prisma");
@@ -66,6 +69,10 @@ export async function POST(request) {
                 });
             } catch (err) {
                 console.error("[APPLY] Database save failed:", err.message);
+                return NextResponse.json({
+                    error: "Failed to save application to database. Check Vercel logs.",
+                    details: err.message
+                }, { status: 500 });
             }
         }
 

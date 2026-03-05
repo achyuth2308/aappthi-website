@@ -12,21 +12,27 @@ export async function POST(request) {
             );
         }
 
-        // Save to DB if configured
-        if (process.env.DATABASE_URL) {
-            try {
-                const { prisma } = await import("@/lib/prisma");
-                const contact = await prisma.contactMessage.create({
-                    data: { name, email, phone: phone || null, message },
-                });
-                return NextResponse.json({ success: true, id: contact.id }, { status: 201 });
-            } catch (dbErr) {
-                console.error("DB error:", dbErr);
-            }
+        // Save to DB
+        if (!process.env.DATABASE_URL) {
+            console.error("DATABASE_URL is missing");
+            return NextResponse.json({
+                error: "Database configuration missing. Please set DATABASE_URL in Vercel."
+            }, { status: 500 });
         }
 
-        console.log("Contact form submission (no DB):", { name, email, phone, message });
-        return NextResponse.json({ success: true, message: "Message received." }, { status: 200 });
+        try {
+            const { prisma } = await import("@/lib/prisma");
+            const contact = await prisma.contactMessage.create({
+                data: { name, email, phone: phone || null, message },
+            });
+            return NextResponse.json({ success: true, id: contact.id }, { status: 201 });
+        } catch (dbErr) {
+            console.error("DB error:", dbErr);
+            return NextResponse.json({
+                error: "Failed to save message to database.",
+                details: dbErr.message
+            }, { status: 500 });
+        }
     } catch (error) {
         console.error("Contact API error:", error);
         return NextResponse.json({ error: "Internal server error." }, { status: 500 });

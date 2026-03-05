@@ -83,9 +83,14 @@ export default function AdminDashboardPage() {
                     totalApplicants: applicants.length,
                     approvedApplicants: applicants.filter((a) => a.status === "approved").length,
                     rejectedApplicants: applicants.filter((a) => a.status === "rejected").length,
+                    // Diagnostic info
+                    dbError: contactsData.error || applicantsData.error,
+                    dbConfigured: contactsData.db_configured && applicantsData.db_configured,
+                    isFallback: contactsData.fallback || applicantsRes.fallback
                 });
             } catch (err) {
                 console.error("Failed to fetch stats:", err);
+                setStats(s => ({ ...s, dbError: err.message }));
             } finally {
                 setLoading(false);
             }
@@ -111,6 +116,44 @@ export default function AdminDashboardPage() {
                     <h2 className="text-2xl font-bold text-[#0B1F3A]">Overview</h2>
                     <p className="text-gray-400 text-sm mt-1">Quick summary of contact enquiries and job applications</p>
                 </div>
+
+                {/* Diagnostic Banner */}
+                {stats?.dbError && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="mb-8 p-6 bg-red-50 border border-red-200 rounded-xl flex items-start gap-4 shadow-sm"
+                    >
+                        <XCircle className="text-red-500 mt-1 flex-shrink-0" size={24} />
+                        <div className="flex-1">
+                            <h3 className="text-red-800 font-bold text-lg">Database Connection Issue</h3>
+                            <div className="mt-2 space-y-3">
+                                <div className="bg-white/50 p-3 rounded-lg border border-red-100">
+                                    <p className="text-red-700 text-sm font-mono break-all">
+                                        <strong>Error:</strong> {stats.dbError}
+                                    </p>
+                                </div>
+                                {!stats.dbConfigured && (
+                                    <div className="bg-white/50 p-4 rounded-lg border border-red-200">
+                                        <p className="text-red-800 text-sm font-semibold mb-2">
+                                            Missing Configuration: `DATABASE_URL`
+                                        </p>
+                                        <p className="text-red-700 text-xs leading-relaxed">
+                                            It looks like your database connection string is not set in the environment.
+                                            To fix this in Vercel:
+                                        </p>
+                                        <ol className="list-decimal list-inside mt-2 text-red-700 text-xs space-y-1">
+                                            <li>Go to your project settings in Vercel Dashboard</li>
+                                            <li>Navigate to "Environment Variables"</li>
+                                            <li>Add `DATABASE_URL` with your database connection string</li>
+                                            <li>Redeploy your application for the changes to take effect</li>
+                                        </ol>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
 
                 {loading ? (
                     <div className="flex items-center justify-center py-20">
