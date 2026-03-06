@@ -1,5 +1,5 @@
 export default function sitemap() {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://aapthi.com";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.aapthisolutions.com";
     const routes = [
         "",
         "/about",
