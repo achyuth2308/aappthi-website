@@ -1,4 +1,17 @@
 export default function sitemap() {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.aapthisolutions.com";
+    const routes = [
+        "",
+        "/about",
+        "/services",
+        "/projects",
+        "/global-exposure",
+        "/industry-engagements",
+        "/awards",
+        "/team",
+        "/careers",
+        "/contact",
+    ];
   const baseUrl =
     (process.env.NEXT_PUBLIC_BASE_URL || "https://www.aapthisolutions.com").replace(/\/$/, "");
 

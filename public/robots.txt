@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://aapthi.com/sitemap.xml
+Sitemap: https://www.aapthisolutions.com/sitemap.xml
