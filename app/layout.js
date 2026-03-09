@@ -63,6 +63,17 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
             <body className="font-sans antialiased">
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            "@context": "https://schema.org",
+                            "@type": "Organization",
+                            "url": "https://aapthisolutions.com",
+                            "logo": "https://aapthisolutions.com/Aapthi_logo.png",
+                        }),
+                    }}
+                />
                 <PublicShell>{children}</PublicShell>
             </body>
         </html>
