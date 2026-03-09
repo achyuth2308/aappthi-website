@@ -34,7 +34,7 @@ export const metadata = {
     openGraph: {
         type: "website",
         locale: "en_IN",
-        url: "https://aapthisolutions.com",
+        url: "https://www.aapthisolutions.com",
         siteName: "Aapthi Marketing Solutions",
         title: "Aapthi Marketing Solutions Pvt Ltd",
         description:
@@ -57,6 +57,7 @@ export const metadata = {
         shortcut: "/Aapthi_logo.png",
         apple: "/Aapthi_logo.png",
     },
+    manifest: "/manifest.json",
 };
 
 export default function RootLayout({ children }) {
@@ -69,8 +70,8 @@ export default function RootLayout({ children }) {
                         __html: JSON.stringify({
                             "@context": "https://schema.org",
                             "@type": "Organization",
-                            "url": "https://aapthisolutions.com",
-                            "logo": "https://aapthisolutions.com/Aapthi_logo.png",
+                            "url": "https://www.aapthisolutions.com",
+                            "logo": "https://www.aapthisolutions.com/Aapthi_logo.png",
                         }),
                     }}
                 />
