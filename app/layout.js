@@ -54,6 +54,8 @@ export const metadata = {
     },
     icons: {
         icon: "/Aapthi_logo.png",
+        shortcut: "/Aapthi_logo.png",
+        apple: "/Aapthi_logo.png",
     },
 };
 
