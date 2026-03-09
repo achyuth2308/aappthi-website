@@ -34,7 +34,7 @@ export const metadata = {
     openGraph: {
         type: "website",
         locale: "en_IN",
-        url: "https://aapthi.com",
+        url: "https://aapthisolutions.com",
         siteName: "Aapthi Marketing Solutions",
         title: "Aapthi Marketing Solutions Pvt Ltd",
         description:
@@ -51,6 +51,9 @@ export const metadata = {
     },
     verification: {
         google: "L5QKvoJgNH3Y5gasQCqqwwUlVJqT77ZdCJy1ey0yPjA",
+    },
+    icons: {
+        icon: "/Aapthi_logo.png",
     },
 };
 
