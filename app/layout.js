@@ -53,9 +53,9 @@ export const metadata = {
         google: "L5QKvoJgNH3Y5gasQCqqwwUlVJqT77ZdCJy1ey0yPjA",
     },
     icons: {
-        icon: "/Aapthi_logo.png",
-        shortcut: "/Aapthi_logo.png",
-        apple: "/Aapthi_logo.png",
+        icon: "/favicon.ico",
+        shortcut: "/favicon.ico",
+        apple: "/favicon.ico",
     },
     manifest: "/manifest.json",
 };
