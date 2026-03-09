@@ -3,9 +3,20 @@
     "short_name": "Aapthi",
     "icons": [
         {
-            "src": "/icon-48x48.png",
-            "sizes": "48x48",
+            "src": "/browser_logo_16.png",
+            "sizes": "16x16",
             "type": "image/png"
+        },
+        {
+            "src": "/browser_logo_32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "/browser_logo_180.png",
+            "sizes": "180x180",
+            "type": "image/png",
+            "purpose": "any"
         },
         {
             "src": "/icon-192x192.png",

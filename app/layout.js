@@ -54,12 +54,12 @@ export const metadata = {
     },
     icons: {
         icon: [
-            { url: "/icon-48x48.png", sizes: "48x48", type: "image/png" },
-            { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
-            { url: "/icon-512x512.png", sizes: "512x512", type: "image/png" },
+            { url: "/browser_logo_32.png", sizes: "32x32", type: "image/png" },
+            { url: "/browser_logo_16.png", sizes: "16x16", type: "image/png" },
         ],
-        shortcut: "/icon-192x192.png",
-        apple: "/icon-192x192.png",
+        apple: [
+            { url: "/browser_logo_180.png", sizes: "180x180", type: "image/png" },
+        ],
     },
     manifest: "/manifest.json",
 };
@@ -75,7 +75,7 @@ export default function RootLayout({ children }) {
                             "@context": "https://schema.org",
                             "@type": "Organization",
                             "url": "https://www.aapthisolutions.com",
-                            "logo": "https://www.aapthisolutions.com/Aapthi_logo.png",
+                            "logo": "https://www.aapthisolutions.com/browser_logo_180.png",
                         }),
                     }}
                 />
